@@ -1,0 +1,15 @@
+# src/api/requirements.txt
+
+# Web Server and API Framework
+fastapi
+uvicorn[standard] # uvicorn is the ASGI server, standard includes necessary extras
+
+# Data Manipulation and ML
+pandas
+scikit-learn
+
+# Model Persistence
+joblib
+
+# Data Validation/Serialization (used by FastAPI)
+pydantic
