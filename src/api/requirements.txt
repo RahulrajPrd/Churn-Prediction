@@ -6,7 +6,7 @@ uvicorn[standard] # uvicorn is the ASGI server, standard includes necessary extr
 
 # Data Manipulation and ML
 pandas
-scikit-learn
+scikit-learn==1.4.0
 
 # Model Persistence
 joblib
