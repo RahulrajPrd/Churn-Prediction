@@ -1,0 +1,7 @@
+# k8s/raw-yaml/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ml-serving
+  labels:
+    app: churn-prediction-api

@@ -1,0 +1,14 @@
+# k8s/raw-yaml/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: churn-prediction-service
+  namespace: ml-serving
+spec:
+  type: LoadBalancer 
+  ports:
+    - port: 80 # The port the service exposes
+      targetPort: 80 # The port the container is listening on
+      protocol: TCP
+  selector:
+    app: churn-prediction-api

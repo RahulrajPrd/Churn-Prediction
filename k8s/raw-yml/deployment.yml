@@ -1,0 +1,45 @@
+# k8s/raw-yaml/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: churn-prediction-deployment
+  namespace: ml-serving
+  labels:
+    app: churn-prediction-api
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: churn-prediction-api
+  template:
+    metadata:
+      labels:
+        app: churn-prediction-api
+    spec:
+      containers:
+        - name: churn-prediction-container
+          image: rahulrajparida/churn-prediction:v2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80 
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
+          # Liveness and Readiness Probes for resilience (using the /health endpoint)
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
