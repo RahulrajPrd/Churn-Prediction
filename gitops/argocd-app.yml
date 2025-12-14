@@ -1,0 +1,33 @@
+# gitops/argocd-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Name of the ArgoCD Application resource
+  name: churn-prediction-api-gitops
+  namespace: argocd # Assuming ArgoCD itself is installed in the 'argocd' namespace
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io # Best practice for clean deletion
+spec:
+  project: default # Use the default ArgoCD project
+
+  source:
+    # 1. Repository: Replace with your actual GitHub URL
+    repoURL: https://github.com/RahulrajPrd/Churn-Prediction.git
+    targetRevision: HEAD # Always monitor the latest commit on the current branch
+    
+    # 2. Path: The exact folder containing your K8s YAML files
+    path: k8s/raw-yml
+
+  destination:
+    # 3. Server: Points to the cluster where the app should run
+    server: https://kubernetes.default.svc 
+    # 4. Namespace: The target namespace you created earlier
+    namespace: ml-serving 
+
+  # The Sync Policy defines the GitOps behavior
+  syncPolicy:
+    automated:
+      prune: true # Allows ArgoCD to delete resources removed from Git
+      selfHeal: true # Automatically fix any manual changes made directly to K8s
+    syncOptions:
+    - CreateNamespace=true # ArgoCD should create the target namespace if it doesn't exist
